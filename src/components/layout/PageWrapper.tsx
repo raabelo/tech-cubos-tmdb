@@ -16,7 +16,7 @@ const PageWrapper: React.FC<{ children: ReactNode }> = ({ children }) => {
         <>
             <div className="size-full bg-background-home bg-cover bg-fixed">
                 <div
-                    className="size-full bg-fixed bg-gradient-to-b dark:from-black dark:via-black/60 dark:to-black/80
+                    className="relative size-full bg-fixed bg-gradient-to-b dark:from-black dark:via-black/60 dark:to-black/80
                     from-white via-white/60 to-white/80 bg-gray-500/10 min-h-svh "
                 >
                     <Header />
