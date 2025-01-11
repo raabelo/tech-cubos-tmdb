@@ -12,8 +12,14 @@ const Footer: React.FC = () => {
                 `}
             >
                 <p className="dark:text-dark-mauve12 text-light-mauve12 text-center w-full">
-                    2025 © Todos os direitos reservados a <span>Cubos Movies</span> • Desenvolvido
-                    por <Link to={"https://www.linkedin.com/in/raabelo/"}>Fabiano Rabelo</Link>
+                    2025 © Todos os direitos reservados a{" "}
+                    <span className="font-bold">Cubos Movies</span> • Desenvolvido por{" "}
+                    <Link
+                        className="font-bold hover:opacity-50 transition-all"
+                        to={"https://www.linkedin.com/in/raabelo/"}
+                    >
+                        Fabiano Rabelo
+                    </Link>
                 </p>
             </footer>
         </>

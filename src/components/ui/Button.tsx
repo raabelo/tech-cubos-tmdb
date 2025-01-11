@@ -22,7 +22,7 @@ const Button: React.FC<ButtonProps> = ({ children, variant = "primary", ...props
             <button
                 {...props}
                 type={props.type || "button"}
-                className={`rounded-md p-4 flex items-center justify-center transition-all ${
+                className={`rounded-md p-4 flex items-center justify-center transition-all dark:text-dark-mauve12 text-light-mauve12 ${
                     variantProps[variant]
                 } ${props.className || ""}`}
             >

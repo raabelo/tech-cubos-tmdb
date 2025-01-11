@@ -26,10 +26,7 @@ const Header: React.FC = () => {
 
                 <div className="flex flex-row items-center gap-4 mr-0 ml-auto">
                     <Button variant="secondary" onClick={toggleTheme} className="px-6">
-                        <ReactSVG
-                            src={IcoSun}
-                            className="dark:text-dark-mauve12 text-light-mauve12 w-6"
-                        />
+                        <ReactSVG src={IcoSun} className="w-6" />
                     </Button>
                 </div>
             </header>
