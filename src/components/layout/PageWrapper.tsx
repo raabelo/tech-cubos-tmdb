@@ -2,9 +2,12 @@ import { ReactNode, useEffect, useState } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 
+const SCROLL_THRESHOLD = 100;
+
 const PageWrapper: React.FC<{ children: ReactNode }> = ({ children }) => {
     const [headerHeight, setHeaderHeight] = useState<number>(0);
     const [footerHeight, setFooterHeight] = useState<number>(0);
+    const [scrollPosition, setScrollPosition] = useState<number>(0);
 
     useEffect(() => {
         const headerElement = document.getElementById("header");
@@ -16,6 +19,16 @@ const PageWrapper: React.FC<{ children: ReactNode }> = ({ children }) => {
         if (footerElement) {
             setFooterHeight(footerElement.offsetHeight);
         }
+
+        const handleScroll = () => {
+            setScrollPosition(window.scrollY);
+        };
+
+        window.addEventListener("scroll", handleScroll);
+
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+        };
     }, []);
 
     return (
@@ -35,6 +48,18 @@ const PageWrapper: React.FC<{ children: ReactNode }> = ({ children }) => {
                     <Footer />
                 </div>
             </div>
+            {scrollPosition > SCROLL_THRESHOLD && (
+                <button
+                    id="back-to-top"
+                    type="button"
+                    onClick={() => {
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                    }}
+                    className="aspect-square w-12 transition-all rounded-full fixed bottom-4 right-4 bg-dark-purple8/80 p-1 text-dark-mauve12 z-50 hover:opacity-50"
+                >
+                    {"↑"}
+                </button>
+            )}
         </>
     );
 };

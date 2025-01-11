@@ -1,50 +1,81 @@
-import Input from "../components/ui/Input";
-import IcoSearch from "../assets/icons/Search.svg";
-import IcoFilter from "../assets/icons/Filter.svg";
-import IcoChevronLeft from "../assets/icons/ChevronLeft.svg";
-import IcoChevronRight from "../assets/icons/ChevronRight.svg";
-import { ReactSVG } from "react-svg";
-import Button from "../components/ui/Button";
+import React, { useState, useEffect, useCallback } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import MovieCard from "../components/layout/MovieCard";
+import { TMDBMovie } from "../types/TMDBMovie";
+import { getPopularMovies, searchMovies } from "../services/tmdb";
+import SearchBar from "../components/layout/SearchBar";
+import Pagination from "../components/layout/Pagination";
 
 const Home: React.FC = () => {
-    const movies = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+    const { page: queryPage } = useParams();
+    const navigate = useNavigate();
+
+    const [movies, setMovies] = useState<TMDBMovie[]>([]);
+    const [searchQuery, setSearchQuery] = useState<string>("");
+    const [page, setPage] = useState<number>(1);
+    const [totalPages, setTotalPages] = useState<number>(1);
+
+    const fetchMovies = useCallback(async () => {
+        console.log(page, page / 2, Math.ceil(page / 2));
+        const response = await getPopularMovies(Math.ceil(page / 2));
+        setMovies(response.results);
+        setTotalPages(response.total_pages);
+    }, [page]);
+
+    const getPaginatedMovies = useCallback(() => {
+        const midIndex = Math.floor(movies.length / 2);
+        return page % 2 === 0 ? movies.slice(midIndex) : movies.slice(0, midIndex);
+    }, [movies, page]);
+
+    const handleSearch = useCallback(async () => {
+        if (searchQuery.trim()) {
+            const response = await searchMovies(searchQuery, Math.floor(page));
+            setMovies(response.results);
+            setTotalPages(response.total_pages);
+        } else {
+            fetchMovies();
+        }
+    }, [searchQuery, page, fetchMovies]);
+
+    const handlePageChange = (newPage: number) => {
+        setPage(newPage);
+        navigate(`/${newPage}`, { replace: true });
+    };
+
+    useEffect(() => {
+        if (queryPage) {
+            const pageNumber = parseInt(queryPage, 10);
+            const validPageNumber = isNaN(pageNumber) ? 1 : Math.min(Math.max(pageNumber, 1), 500);
+            setPage(validPageNumber);
+        } else {
+            setPage(1);
+        }
+    }, [queryPage]);
+
+    useEffect(() => {
+        fetchMovies();
+    }, [fetchMovies]);
 
     return (
         <>
             <section className="relative size-full h-fit flex flex-col justify-center">
-                <div className="flex flex-row p-4 w-full gap-2.5 mt-6 md:max-w-[60%] xl:max-w-[40%] mx-auto">
-                    <Input
-                        label=""
-                        placeholder="Pesquise por filmes"
-                        icon={<ReactSVG src={IcoSearch} className="w-6" />}
-                    />
-                    <Button variant="secondary" onClick={() => {}}>
-                        <ReactSVG src={IcoFilter} className="w-6" />
-                    </Button>
-                </div>
+                <SearchBar
+                    searchQuery={searchQuery}
+                    onSearch={handleSearch}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                />
 
-                <div
-                    className="bg-gradient-to-t dark:from-dark-mauve1 dark:via-dark-mauve1/80 dark:to-dark-mauve1/20
-                    from-light-mauve1 via-light-mauve1/80 to-light-mauve1/20"
-                >
-                    <div
-                        className="lg:m-6 p-6 rounded-lg dark:bg-dark-mauve11/20 bg-light-mauve11/20 grid
-                            gap-4 md:gap-6 grid-cols-2 md:grid-cols-3 lg:grid-cols-5 4xl:grid-cols-7
-                            "
-                    >
-                        {movies.map((movie) => {
-                            return <MovieCard />;
-                        })}
+                <div className="bg-gradient-to-t dark:from-dark-mauve1 dark:via-dark-mauve1/80 dark:to-dark-mauve1/20 from-light-mauve1 via-light-mauve1/80 to-light-mauve1/20">
+                    <div className="lg:m-6 p-6 rounded-lg dark:bg-dark-mauve11/20 bg-light-mauve11/20 grid gap-4 md:gap-6 grid-cols-2 md:grid-cols-3 lg:grid-cols-5 4xl:grid-cols-7">
+                        {getPaginatedMovies().map((movie) => (
+                            <MovieCard key={movie.id} movie={movie} />
+                        ))}
                     </div>
-                    <div className="flex flex-row justify-center p-4 mb-6 gap-3">
-                        <Button onClick={() => {}} className="px-6">
-                            <ReactSVG src={IcoChevronLeft} className="w-6" />
-                        </Button>
-                        <Button onClick={() => {}} className="px-6">
-                            <ReactSVG src={IcoChevronRight} className="w-6" />
-                        </Button>
-                    </div>
+                    <Pagination
+                        currentPage={page}
+                        totalPages={totalPages}
+                        onPageChange={handlePageChange}
+                    />
                 </div>
             </section>
         </>

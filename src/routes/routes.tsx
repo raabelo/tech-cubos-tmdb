@@ -6,7 +6,7 @@ const RouterManager = () => {
     return (
         <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/:id" element={<Home />} />
+            <Route path="/:page" element={<Home />} />
             <Route path="/movies/:id" element={<></>} />
 
             <Route path="*" element={<NotFound />} />

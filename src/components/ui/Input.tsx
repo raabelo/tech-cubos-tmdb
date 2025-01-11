@@ -12,6 +12,7 @@ const Input: React.FC<InputProps> = ({ label, icon, iconPosition = "right", ...p
     const [isInputOnFocus, setIsInputOnFocus] = useState<boolean>(false);
     return (
         <>
+            {label && <label>{label}</label>}
             <div
                 className={`rounded-md flex w-full transition-all ${
                     iconPosition === "right" ? "flex-row" : "flex-row-reverse"
@@ -23,7 +24,6 @@ const Input: React.FC<InputProps> = ({ label, icon, iconPosition = "right", ...p
                     }                    
                     `}
             >
-                {label && <label>{label}</label>}
                 <input
                     {...props}
                     onFocus={() => setIsInputOnFocus(true)}
