@@ -28,7 +28,9 @@ const Input: React.FC<InputProps> = ({ label, icon, iconPosition = "right", ...p
                     {...props}
                     onFocus={() => setIsInputOnFocus(true)}
                     onBlur={() => setIsInputOnFocus(false)}
-                    className={`bg-transparent size-full p-3 ${props.className || ""}`}
+                    className={`bg-transparent size-full p-3 caret-dark-purple8 ${
+                        props.className || ""
+                    }`}
                 />
                 {icon}
             </div>

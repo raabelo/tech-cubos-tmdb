@@ -1,55 +1,85 @@
-import axios from "axios";
+import axios, { AxiosInstance } from "axios";
 import { getCurrentLanguage } from "../utils/translations/i18n";
+import { TMDBSearchResponse } from "../types/TMDBSearch";
+import { TMDBMoviesDetailsIncluded } from "../types/TMDBMovieDetails";
+import { TMDBGenresResponse } from "../types/TMDBGenres";
 
 const TMDB_BASE_URL = "https://api.themoviedb.org/3";
 const TMDB_API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 
 export const posterBaseUrl = "https://image.tmdb.org/t/p/w500";
+export const backdropBaseUrl = "https://image.tmdb.org/t/p/w1280";
 
-const tmdb = axios.create({
-    baseURL: TMDB_BASE_URL,
-    params: {
-        api_key: TMDB_API_KEY,
-    },
-});
+class tmdbService {
+    private axiosInstance: AxiosInstance;
 
-export const getPopularMovies = async (page: number = 1) => {
-    const { data } = await tmdb.get("/movie/popular", {
-        params: {
-            page,
-            language: getCurrentLanguage(),
-        },
-    });
-    return data;
-};
+    constructor() {
+        this.axiosInstance = axios.create({
+            baseURL: TMDB_BASE_URL,
+            params: {
+                api_key: TMDB_API_KEY,
+            },
+        });
+    }
 
-export const searchMovies = async (query: string, page: number = 1) => {
-    const { data } = await tmdb.get("/search/movie", {
-        params: {
-            query,
-            page,
-            language: getCurrentLanguage(),
-        },
-    });
-    return data;
-};
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    private async fetchDataWithFallback(endpoint: string, params: any): Promise<any> {
+        const language = getCurrentLanguage();
 
-export const getMovieDetails = async (movieId: number) => {
-    const { data } = await tmdb.get(`/movie/${movieId}`, {
-        params: {
-            language: getCurrentLanguage(),
-        },
-    });
-    return data;
-};
+        try {
+            const { data } = await this.axiosInstance.get(endpoint, {
+                params: {
+                    ...params,
+                    language,
+                },
+            });
 
-export const getMovieGenres = async () => {
-    const { data } = await tmdb.get("/genre/movie/list", {
-        params: {
-            language: getCurrentLanguage(),
-        },
-    });
-    return data.genres;
-};
+            const missingFields = Object.keys(data).filter((key) => !data[key]);
 
+            if (missingFields.length > 0) {
+                const { data: fallbackData } = await this.axiosInstance.get(endpoint, {
+                    params: {
+                        ...params,
+                        language: "en",
+                    },
+                });
+
+                missingFields.forEach((field) => {
+                    if (!data[field] && fallbackData[field]) {
+                        data[field] = fallbackData[field];
+                    }
+                });
+            }
+
+            return data;
+        } catch (error) {
+            console.error("Error fetching data:", error);
+            throw error;
+        }
+    }
+
+    public async getPopularMovies(page: number = 1): Promise<TMDBSearchResponse> {
+        return this.fetchDataWithFallback("/movie/popular", { page });
+    }
+
+    public async searchMovies(query: string, page: number = 1): Promise<TMDBSearchResponse> {
+        return this.fetchDataWithFallback("/search/movie", { query, page });
+    }
+
+    public async getMovieDetails(movieId: number): Promise<TMDBMoviesDetailsIncluded> {
+        const movieDetails = await this.fetchDataWithFallback(`/movie/${movieId}`, {});
+        const videoData = await this.fetchDataWithFallback(`/movie/${movieId}/videos`, {});
+
+        return {
+            details: movieDetails,
+            videos: videoData,
+        };
+    }
+
+    public async getMovieGenres(): Promise<TMDBGenresResponse> {
+        return this.fetchDataWithFallback("/genre/movie/list", {});
+    }
+}
+
+const tmdb = new tmdbService();
 export default tmdb;

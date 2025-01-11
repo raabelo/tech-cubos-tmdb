@@ -70,7 +70,7 @@ const Pagination: React.FC<{
                     </Button>
                 </div>
 
-                <div className="flex flex-wrap flex-row justify-between gap-2 mt-4 mx-[10%]">
+                <div className="flex flex-wrap flex-row justify-center md:justify-between gap-8 mt-4 md:mx-[10%]">
                     <button
                         type="button"
                         onClick={() => onPageChange(1)}

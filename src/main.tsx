@@ -5,13 +5,16 @@ import "core-js/features/array/from";
 import "./styles/index.css";
 import { ThemeProvider } from "./contexts/ThemeContext.tsx";
 import { BrowserRouter } from "react-router-dom";
+import { GenresProvider } from "./contexts/GenresContext.tsx";
 
 createRoot(document.getElementById("root")!).render(
     <StrictMode>
         <BrowserRouter>
-            <ThemeProvider>
-                <App />
-            </ThemeProvider>
+            <GenresProvider>
+                <ThemeProvider>
+                    <App />
+                </ThemeProvider>
+            </GenresProvider>
         </BrowserRouter>
     </StrictMode>
 );

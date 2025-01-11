@@ -28,11 +28,14 @@ export default {
                 "3xl": "1920px",
                 "4xl": "2560px",
             },
-        },
-        fontFamily: {
-            inter: ["Inter", "Roboto", "Montserrat", "Arial", "sans - serif"],
-            inter: ["Roboto", "Inter", "Montserrat", "Arial", "sans - serif"],
-            inter: ["Montserrat", "Inter", "Roboto", "Arial", "sans - serif"],
+            fontFamily: {
+                montserrat: ["'Montserrat'", "Arial", "sans-serif"],
+                inter: ["'Inter'", "Arial", "sans-serif"],
+                roboto: ["'Roboto'", "Arial", "sans-serif"],
+            },
+            backdropBlur: {
+                xs: "2px",
+            },
         },
     },
     plugins: [],

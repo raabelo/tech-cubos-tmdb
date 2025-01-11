@@ -1,23 +1,23 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import MovieCard from "../components/layout/MovieCard";
-import { TMDBMovie } from "../types/TMDBMovie";
-import { getPopularMovies, searchMovies } from "../services/tmdb";
+import { TMDBMovies } from "../types/TMDBMovies";
 import SearchBar from "../components/layout/SearchBar";
 import Pagination from "../components/layout/Pagination";
+import tmdb from "../services/tmdb";
 
 const Home: React.FC = () => {
     const { page: queryPage } = useParams();
     const navigate = useNavigate();
 
-    const [movies, setMovies] = useState<TMDBMovie[]>([]);
+    const [movies, setMovies] = useState<TMDBMovies[]>([]);
     const [searchQuery, setSearchQuery] = useState<string>("");
     const [page, setPage] = useState<number>(1);
     const [totalPages, setTotalPages] = useState<number>(1);
 
     const fetchMovies = useCallback(async () => {
-        console.log(page, page / 2, Math.ceil(page / 2));
-        const response = await getPopularMovies(Math.ceil(page / 2));
+        const response = await tmdb.getPopularMovies(Math.ceil(page / 2));
+        console.log(response);
         setMovies(response.results);
         setTotalPages(response.total_pages);
     }, [page]);
@@ -29,7 +29,7 @@ const Home: React.FC = () => {
 
     const handleSearch = useCallback(async () => {
         if (searchQuery.trim()) {
-            const response = await searchMovies(searchQuery, Math.floor(page));
+            const response = await tmdb.searchMovies(searchQuery, Math.floor(page));
             setMovies(response.results);
             setTotalPages(response.total_pages);
         } else {
@@ -58,15 +58,23 @@ const Home: React.FC = () => {
 
     return (
         <>
-            <section className="relative size-full h-fit flex flex-col justify-center">
+            <section className="relative size-full h-fit flex flex-col justify-center font-montserrat">
                 <SearchBar
                     searchQuery={searchQuery}
                     onSearch={handleSearch}
                     onChange={(e) => setSearchQuery(e.target.value)}
                 />
 
-                <div className="bg-gradient-to-t dark:from-dark-mauve1 dark:via-dark-mauve1/80 dark:to-dark-mauve1/20 from-light-mauve1 via-light-mauve1/80 to-light-mauve1/20">
-                    <div className="lg:m-6 p-6 rounded-lg dark:bg-dark-mauve11/20 bg-light-mauve11/20 grid gap-4 md:gap-6 grid-cols-2 md:grid-cols-3 lg:grid-cols-5 4xl:grid-cols-7">
+                <div
+                    className="bg-gradient-to-t 
+                            dark:from-dark-mauve1 dark:via-dark-mauve1/80 dark:to-dark-mauve1/20
+                            from-light-mauve1 via-light-mauve1/80 to-light-mauve1/20"
+                >
+                    <div
+                        className="lg:m-6 p-6 rounded-lg backdrop-blur-xs
+                            dark:bg-dark-mauve11/10 bg-light-mauve11/10
+                              grid gap-4 md:gap-6 grid-cols-2 md:grid-cols-3 lg:grid-cols-5 4xl:grid-cols-7"
+                    >
                         {getPaginatedMovies().map((movie) => (
                             <MovieCard key={movie.id} movie={movie} />
                         ))}

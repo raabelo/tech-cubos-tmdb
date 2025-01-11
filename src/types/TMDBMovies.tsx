@@ -1,4 +1,4 @@
-export interface TMDBMovie {
+export interface TMDBMovies {
     id: number;
     title: string;
     original_title: string;
