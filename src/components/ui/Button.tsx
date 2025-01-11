@@ -1,9 +1,9 @@
-import React from "react";
+import React, { ReactNode } from "react";
 
 type ButtonVariants = "primary" | "secondary";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-    children: React.ReactNode;
+    children: ReactNode;
     variant?: ButtonVariants;
 }
 
@@ -18,15 +18,17 @@ const Button: React.FC<ButtonProps> = ({ children, variant = "primary", ...props
     };
 
     return (
-        <button
-            {...props}
-            type={props.type || "button"}
-            className={`rounded-md p-4 flex items-center justify-center transition-all ${
-                variantProps[variant]
-            } ${props.className || ""}`}
-        >
-            {children}
-        </button>
+        <>
+            <button
+                {...props}
+                type={props.type || "button"}
+                className={`rounded-md p-4 flex items-center justify-center transition-all ${
+                    variantProps[variant]
+                } ${props.className || ""}`}
+            >
+                {children}
+            </button>
+        </>
     );
 };
 

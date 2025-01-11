@@ -14,3 +14,7 @@
     font-family: Inter, Roboto, Montserrat, Arial, Helvetica, sans-serif;
     line-height: 1;
 }
+
+input {
+    outline: none;
+}
