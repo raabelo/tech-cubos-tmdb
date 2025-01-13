@@ -1,4 +1,4 @@
-import { StrictMode } from "react";
+// import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
 import "core-js/features/array/from";
@@ -8,7 +8,7 @@ import { BrowserRouter } from "react-router-dom";
 import { GenresProvider } from "./contexts/GenresContext.tsx";
 
 createRoot(document.getElementById("root")!).render(
-    <StrictMode>
+    // <StrictMode>
         <BrowserRouter>
             <GenresProvider>
                 <ThemeProvider>
@@ -16,5 +16,5 @@ createRoot(document.getElementById("root")!).render(
                 </ThemeProvider>
             </GenresProvider>
         </BrowserRouter>
-    </StrictMode>
+    // </StrictMode>
 );

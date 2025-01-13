@@ -29,7 +29,7 @@ const PageWrapper: React.FC<{ children: ReactNode }> = ({ children }) => {
                     from-white via-white/50 to-white/80 bg-gray-500/10 min-h-svh"
                 >
                     <Header />
-                    <div className={`size-full`}>{children}</div>
+                    <div className={`size-full min-h-svh`}>{children}</div>
                     <Footer />
                 </div>
             </div>

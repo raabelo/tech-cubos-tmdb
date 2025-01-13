@@ -8,7 +8,7 @@ const Footer: React.FC = () => {
         <>
             <footer
                 id="footer"
-                className={`w-full bottom-0 flex p-5 font-montserrat
+                className={`w-full mt-auto mb-0 flex p-5 font-montserrat
                             border-t border-dark-mauve12/20
                             dark:bg-dark-mauve1/80
                             bg-light-mauve1/80

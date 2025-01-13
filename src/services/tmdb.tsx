@@ -1,8 +1,9 @@
-import axios, { AxiosInstance } from "axios";
+import axios, { AxiosError, AxiosInstance } from "axios";
 import { getCurrentLanguage } from "../utils/translations/i18n";
 import { TMDBSearchResponse } from "../types/TMDBSearch";
 import { TMDBMoviesDetailsIncluded } from "../types/TMDBMovieDetails";
 import { TMDBGenresResponse } from "../types/TMDBGenres";
+import { toast } from "react-toastify";
 
 const TMDB_BASE_URL = "https://api.themoviedb.org/3";
 const TMDB_API_KEY = import.meta.env.VITE_TMDB_API_KEY;
@@ -52,8 +53,13 @@ class tmdbService {
             }
 
             return data;
-        } catch (error) {
+        } catch (err) {
+            const error = err as { response: { data: { status_message: string } } }
+            
             console.error("Error fetching data:", error);
+            if (error?.response?.data?.status_message) {
+                toast.error(error?.response?.data?.status_message)
+            }
             throw error;
         }
     }
