@@ -1,6 +1,6 @@
 # Como Rodar a Aplicação React com Vite e TypeScript
 
-Este tutorial explica como configurar e rodar uma aplicação React com Vite e TypeScript que está hospedada em um repositório no GitHub.
+Este tutorial explica como configurar e rodar a aplicação React com Vite e TypeScript que está hospedada em um repositório no GitHub, construida para o desafio Cubos.
 
 ## Pré-requisitos
 
@@ -20,17 +20,15 @@ Certifique-se de que você tenha os seguintes itens instalados no seu sistema:
 Abra o terminal e execute o comando abaixo para clonar o repositório:
 
 ```bash
-git clone https://github.com/usuario/nome-do-repositorio.git
+git clone https://github.com/raabelo/tech-cubos-tmdb
 ```
-
-Substitua `https://github.com/usuario/nome-do-repositorio.git` pela URL do repositório que você deseja clonar.
 
 ### 2. Acessar o Diretório do Projeto
 
-Após clonar o repositório, entre no diretório do projeto:
+Após clonar o repositório, entre no diretório do projeto, caso ainda não esteja localizado no mesmo:
 
 ```bash
-cd nome-do-repositorio
+cd tech-cubos-tmdb
 ```
 
 ### 3. Instalar as Dependências
@@ -40,8 +38,6 @@ Instale as dependências do projeto utilizando o npm (ou yarn, se preferir):
 ```bash
 npm install
 ```
-
-> **Nota:** Se você estiver usando Yarn, substitua `npm install` por `yarn`.
 
 ### 4. Rodar o Servidor de Desenvolvimento
 
@@ -71,7 +67,7 @@ Agora você verá sua aplicação React rodando!
 
 ## Scripts Adicionais
 
-Além de `npm run dev`, o projeto pode incluir outros scripts úteis no arquivo `package.json`. Aqui estão alguns comuns:
+Além de `npm run dev`, o projeto inclui outros scripts úteis no arquivo `package.json`. Aqui estão alguns comuns:
 
 - **Build da aplicação**:
   ```bash
@@ -84,11 +80,6 @@ Além de `npm run dev`, o projeto pode incluir outros scripts úteis no arquivo 
   npm run preview
   ```
   Inicia um servidor para pré-visualizar o build.
-
-- **Testes** (se configurados):
-  ```bash
-  npm test
-  ```
 
 ## Dicas de Solução de Problemas
 
@@ -106,4 +97,4 @@ Além de `npm run dev`, o projeto pode incluir outros scripts úteis no arquivo 
 
 ---
 
-Se tiver dúvidas ou problemas, consulte a [documentação oficial do Vite](https://vitejs.dev/) ou entre em contato com o mantenedor do repositório.
+Se tiver dúvidas ou problemas, consulte a [documentação oficial do Vite](https://vitejs.dev/) ou entre em contato com o mantenedor do repositório em https://br.linkedin.com/in/raabelo ou via email rabelo.fv@gmail.com.
