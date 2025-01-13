@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import MoviePoster from "../components/ui/MoviePoster";
 import { TMDBMoviesDetails } from "../types/TMDBMovieDetails";
 import { useEffect, useState } from "react";
@@ -11,6 +11,8 @@ import MovieGrade from "../components/ui/MovieGrade";
 import LabelTag from "../components/ui/LabelTag";
 import { useTranslation } from "react-i18next";
 import { getCurrentLanguage } from "../utils/translations/i18n";
+import IcoChevronLeft from "../assets/icons/ChevronLeft.svg";
+import { ReactSVG } from "react-svg";
 
 const Movie: React.FC = () => {
     const navigate = useNavigate();
@@ -50,9 +52,18 @@ const Movie: React.FC = () => {
                     }}
                 >
                     <div
-                        className="flex flex-col lg:flex-row w-full bg-gradient-to-r p-8 gap-8
+                        className="relative flex flex-col lg:flex-row w-full bg-gradient-to-r p-8 gap-8
                                  dark:from-black dark:via-black/80 dark:to-black/50"
                     >
+                        <Link
+                            to="/"
+                            className="absolute lg:-top-3 lg:-left-3 top-3 left-3 aspect-square rounded-full
+                                    items-center justify-center size-10 z-50 text-center flex
+                                    dark:text-dark-mauve12 text-light-mauve12 p-2
+                                    dark:bg-dark-mauve7/50 bg-light-mauve7/50 hover:opacity-50 transition-all"
+                        >
+                            <ReactSVG src={IcoChevronLeft} className="w-6 m-auto" />
+                        </Link>
                         <div className="w-full lg:w-auto lg:h-[60svh]">
                             <MoviePoster posterPath={movieDetails?.poster_path} />
                         </div>
