@@ -1,20 +1,20 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
-import translationPT from "../translations/lang-pt-BR.json";
-import translationEN from "../translations/lang-en-US.json";
+import translationPTBR from "../translations/lang-pt-BR.json";
+import translationENUS from "../translations/lang-en-US.json";
 
 const resources = {
-    pt: {
-        translation: translationPT,
+    "pt-BR": {
+        translation: translationPTBR,
     },
-    en: {
-        translation: translationEN,
+    "en-US": {
+        translation: translationENUS,
     },
 };
 
 i18n.use(initReactI18next).init({
     resources,
-    lng: "pt",
+    lng: "pt-BR",
     interpolation: {
         escapeValue: false,
     },

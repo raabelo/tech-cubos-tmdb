@@ -4,7 +4,7 @@ export const formatCurrency = (value: number = 0) => {
     const scaledValue = value / Math.pow(10, tiers * 3);
     const roundedValue = scaledValue.toFixed(2);
 
-    const formattedValue = `$${parseFloat(roundedValue)}${suffixes[tiers]}`;
+    const formattedValue = `$${parseFloat(roundedValue) || 0}${suffixes[tiers] || ""}`;
 
     return formattedValue;
 };

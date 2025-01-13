@@ -66,6 +66,12 @@ class tmdbService {
         return this.fetchDataWithFallback("/search/movie", { query, page });
     }
 
+    public async discoverMovies(
+        params: Record<string, string | number | boolean | Date>
+    ): Promise<TMDBSearchResponse> {
+        return this.fetchDataWithFallback("/discover/movie", params);
+    }
+
     public async getMovieDetails(movieId: number): Promise<TMDBMoviesDetailsIncluded> {
         const movieDetails = await this.fetchDataWithFallback(`/movie/${movieId}`, {});
         const videoData = await this.fetchDataWithFallback(`/movie/${movieId}/videos`, {});

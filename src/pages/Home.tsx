@@ -4,38 +4,19 @@ import MovieCard from "../components/layout/MovieCard";
 import { TMDBMovies } from "../types/TMDBMovies";
 import SearchBar from "../components/layout/SearchBar";
 import Pagination from "../components/layout/Pagination";
-import tmdb from "../services/tmdb";
 
 const Home: React.FC = () => {
     const { page: queryPage } = useParams();
     const navigate = useNavigate();
 
     const [movies, setMovies] = useState<TMDBMovies[]>([]);
-    const [searchQuery, setSearchQuery] = useState<string>("");
     const [page, setPage] = useState<number>(1);
     const [totalPages, setTotalPages] = useState<number>(1);
-
-    const fetchMovies = useCallback(async () => {
-        const response = await tmdb.getPopularMovies(Math.ceil(page / 2));
-        console.log(response);
-        setMovies(response.results);
-        setTotalPages(response.total_pages);
-    }, [page]);
 
     const getPaginatedMovies = useCallback(() => {
         const midIndex = Math.floor(movies.length / 2);
         return page % 2 === 0 ? movies.slice(midIndex) : movies.slice(0, midIndex);
     }, [movies, page]);
-
-    const handleSearch = useCallback(async () => {
-        if (searchQuery.trim()) {
-            const response = await tmdb.searchMovies(searchQuery, Math.floor(page));
-            setMovies(response.results);
-            setTotalPages(response.total_pages);
-        } else {
-            fetchMovies();
-        }
-    }, [searchQuery, page, fetchMovies]);
 
     const handlePageChange = (newPage: number) => {
         setPage(newPage);
@@ -43,6 +24,7 @@ const Home: React.FC = () => {
     };
 
     useEffect(() => {
+        document.title = "Cubos Movies";
         if (queryPage) {
             const pageNumber = parseInt(queryPage, 10);
             const validPageNumber = isNaN(pageNumber) ? 1 : Math.min(Math.max(pageNumber, 1), 500);
@@ -52,21 +34,15 @@ const Home: React.FC = () => {
         }
     }, [queryPage]);
 
-    useEffect(() => {
-        fetchMovies();
-    }, [fetchMovies]);
-
     return (
         <>
             <section className="relative size-full h-fit flex flex-col justify-center font-montserrat">
-                <SearchBar
-                    searchQuery={searchQuery}
-                    onSearch={handleSearch}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                />
+                <div className="z-20">
+                    <SearchBar page={page} setMovies={setMovies} setTotalPages={setTotalPages} />
+                </div>
 
                 <div
-                    className="bg-gradient-to-t 
+                    className="bg-gradient-to-t z-10
                             dark:from-dark-mauve1 dark:via-dark-mauve1/80 dark:to-dark-mauve1/20
                             from-light-mauve1 via-light-mauve1/80 to-light-mauve1/20"
                 >

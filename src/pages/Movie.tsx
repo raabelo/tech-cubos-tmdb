@@ -8,6 +8,7 @@ import VideoPlayer from "../components/ui/VideoPlayer";
 import { TMDBVideos } from "../types/TMDBVideos";
 import { formatCurrency, formatLanguage, formatMinutes } from "../utils/functions/formatValue";
 import MovieGrade from "../components/ui/MovieGrade";
+import LabelTag from "../components/ui/LabelTag";
 
 const Movie: React.FC = () => {
     const { id } = useParams();
@@ -19,6 +20,9 @@ const Movie: React.FC = () => {
     useEffect(() => {
         const fetchmovieDetails = async (id: number) => {
             const { details, videos } = await tmdb.getMovieDetails(id);
+            document.title = details.title
+                ? `${document.title} | ${details.title}`
+                : document.title;
             setMovieDetails(details);
             setMovieVideos(videos.results);
         };
@@ -50,7 +54,7 @@ const Movie: React.FC = () => {
                                         {movieDetails?.title}
                                     </h1>
                                     <p className="opacity-80">
-                                        Título original {movieDetails?.original_title}
+                                        Título original: {movieDetails?.original_title}
                                     </p>
                                     <p className="mt-auto italic">{movieDetails?.tagline}</p>
                                 </div>
@@ -116,18 +120,19 @@ const Movie: React.FC = () => {
                                 </div>
                             </div>
                             <div>
-                                <div>
-                                    <MovieDetailCard
-                                        title="GÊNEROS"
-                                        className="text-sm lg:text-base lg:text-nowrap font-bold"
-                                    >
-                                        {movieDetails?.revenue && movieDetails?.budget
-                                            ? formatCurrency(
-                                                  movieDetails?.revenue - movieDetails?.budget
-                                              )
-                                            : "-"}
-                                    </MovieDetailCard>
-                                </div>
+                                <MovieDetailCard title="GÊNEROS" className="w-fit">
+                                    <div className="text-sm font-semibold lg:text-nowrap flex flex-row flex-wrap gap-2">
+                                        {movieDetails?.genres?.map((genre) => (
+                                            <LabelTag key={genre?.id} className="w-fit">
+                                                <div className="flex items-center">
+                                                    <p className="p-2">
+                                                        {genre?.name?.toUpperCase()}
+                                                    </p>
+                                                </div>
+                                            </LabelTag>
+                                        ))}
+                                    </div>
+                                </MovieDetailCard>
                             </div>
                         </div>
                     </div>

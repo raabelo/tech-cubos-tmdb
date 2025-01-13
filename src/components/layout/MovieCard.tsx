@@ -15,7 +15,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
     const [isHovering, setIsHovering] = useState<boolean>(false);
 
     const getGenreNames = (genreIds: number[]) => {
-        return genreIds.map((id) => genres.find((genre) => genre.id === id)?.name).join(", ");
+        return genreIds?.map((id) => genres?.find((genre) => genre.id === id)?.name).join(", ");
     };
 
     if (!movie) {
@@ -52,18 +52,18 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
                 >
                     {isHovering && (
                         <div className="m-auto w-3/4">
-                            <MovieGrade percentage={Math.round(movie.vote_average * 10)} />
+                            <MovieGrade percentage={Math.round(movie?.vote_average * 10)} />
                         </div>
                     )}
                     <p className="text-dark-mauve12 text-wrap font-bold transition-all">
-                        {movie.title?.toUpperCase()}
+                        {movie?.title?.toUpperCase()}
                     </p>
                     {isHovering && (
                         <p
                             className="text-dark-mauve12 text-wrap transition-all
                                         font-montserrat font-light text-sm"
                         >
-                            {getGenreNames(movie.genre_ids)}
+                            {getGenreNames(movie?.genre_ids)}
                         </p>
                     )}
                 </div>
