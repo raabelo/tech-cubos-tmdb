@@ -1,11 +1,13 @@
 import { ReactNode, useEffect, useState } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
+import { useTranslation } from "react-i18next";
 
 const SCROLL_THRESHOLD = 60;
 
 const PageWrapper: React.FC<{ children: ReactNode }> = ({ children }) => {
     const [scrollPosition, setScrollPosition] = useState<number>(0);
+    const { t } = useTranslation();
 
     useEffect(() => {
         const handleScroll = () => {
@@ -39,6 +41,7 @@ const PageWrapper: React.FC<{ children: ReactNode }> = ({ children }) => {
                         window.scrollTo({ top: 0, behavior: "smooth" });
                     }}
                     className="aspect-square w-12 transition-all rounded-full fixed bottom-4 right-4 bg-dark-purple8/80 p-1 text-dark-mauve12 z-50 hover:opacity-50"
+                    aria-label={t("pageWrapper.backToTop")}
                 >
                     {"↑"}
                 </button>

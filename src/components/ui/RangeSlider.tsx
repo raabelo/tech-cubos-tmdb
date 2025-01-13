@@ -62,7 +62,7 @@ const RangeSlider: React.FC<RangeSliderProps> = ({
 
     return (
         <div className="relative w-full flex flex-col items-center justify-center">
-            <div className="flex flex-row items-center justify-center -mt-2 gap-4">
+            <div className="flex flex-row items-center justify-center -mt-2 gap-4 flex-wrap">
                 <p className="mt-4 dark:text-dark-mauve12 text-light-mauve12">
                     {minValue}
                     {unit}

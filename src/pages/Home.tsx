@@ -4,10 +4,12 @@ import MovieCard from "../components/layout/MovieCard";
 import { TMDBMovies } from "../types/TMDBMovies";
 import SearchBar from "../components/layout/SearchBar";
 import Pagination from "../components/layout/Pagination";
+import { useTranslation } from "react-i18next";
 
 const Home: React.FC = () => {
     const { page: queryPage } = useParams();
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     const [movies, setMovies] = useState<TMDBMovies[]>([]);
     const [page, setPage] = useState<number>(1);
@@ -24,7 +26,7 @@ const Home: React.FC = () => {
     };
 
     useEffect(() => {
-        document.title = "Cubos Movies";
+        document.title = t("page_title");
         if (queryPage) {
             const pageNumber = parseInt(queryPage, 10);
             const validPageNumber = isNaN(pageNumber) ? 1 : Math.min(Math.max(pageNumber, 1), 500);
@@ -32,7 +34,7 @@ const Home: React.FC = () => {
         } else {
             setPage(1);
         }
-    }, [queryPage]);
+    }, [queryPage, t]);
 
     return (
         <>

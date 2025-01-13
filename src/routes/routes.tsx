@@ -14,6 +14,7 @@ const RouterManager = () => {
             <Route path="/movies/:id" element={<Movie />} />
 
             <Route path="*" element={<NotFound />} />
+            <Route path="/not-found" element={<NotFound />} />
         </Routes>
     );
 };

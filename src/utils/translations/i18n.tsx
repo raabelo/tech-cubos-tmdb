@@ -3,7 +3,9 @@ import { initReactI18next } from "react-i18next";
 import translationPTBR from "../translations/lang-pt-BR.json";
 import translationENUS from "../translations/lang-en-US.json";
 
-const resources = {
+type Lang = "pt-BR" | "en-US";
+
+const resources: { [key in Lang]: { translation: object } } = {
     "pt-BR": {
         translation: translationPTBR,
     },
@@ -20,6 +22,6 @@ i18n.use(initReactI18next).init({
     },
 });
 
-export const getCurrentLanguage = () => i18n.language;
+export const getCurrentLanguage = (): Lang => i18n.language as Lang;
 
 export default i18n;

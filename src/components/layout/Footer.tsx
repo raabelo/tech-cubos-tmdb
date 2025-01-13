@@ -1,6 +1,9 @@
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const Footer: React.FC = () => {
+    const { t } = useTranslation();
+
     return (
         <>
             <footer
@@ -12,8 +15,9 @@ const Footer: React.FC = () => {
                 `}
             >
                 <p className="dark:text-dark-mauve12 text-light-mauve12 text-center w-full">
-                    2025 © Todos os direitos reservados a{" "}
-                    <span className="font-bold">Cubos Movies</span> • Desenvolvido por{" "}
+                    {t("footer.year")}{" "}
+                    <span className="font-bold">{t("footer.rightsReserved")}</span> •{" "}
+                    {t("footer.developedBy")}{" "}
                     <Link
                         className="font-bold hover:opacity-50 transition-all"
                         to={"https://www.linkedin.com/in/raabelo/"}

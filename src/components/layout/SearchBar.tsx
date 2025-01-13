@@ -10,12 +10,15 @@ import InputForm from "../ui/InputForm";
 import Input from "../ui/Input";
 import { useGenres } from "../../contexts/GenresContext";
 import { TMDBGenres } from "../../types/TMDBGenres";
+import { useTranslation } from "react-i18next";
+import { getCurrentLanguage } from "../../utils/translations/i18n";
 
 const SearchBar: React.FC<{
     page: number;
     setMovies: Dispatch<React.SetStateAction<TMDBMovies[]>>;
     setTotalPages: Dispatch<React.SetStateAction<number>>;
 }> = ({ page, setMovies, setTotalPages }) => {
+    const { t } = useTranslation();
     const { genres } = useGenres();
 
     const [isFiltering, setIsFiltering] = useState<boolean>(false);
@@ -30,6 +33,12 @@ const SearchBar: React.FC<{
             ...prevFilters,
             [key]: value,
         }));
+    };
+
+    const clearFilters = () => {
+        setFilters({
+            sort_by: "popularity",
+        });
     };
 
     const fetchMovies = useCallback(async () => {
@@ -71,54 +80,54 @@ const SearchBar: React.FC<{
 
     useEffect(() => {
         fetchMovies();
-    }, [filters, searchQuery, fetchMovies]);
+    }, [filters, searchQuery, fetchMovies, getCurrentLanguage()]);
 
     const fields: FormSectionProps[] = [
         {
-            title: "Ordenar por",
+            title: t("searchBar.sortBy"),
             fields: [
                 {
                     name: "sort_by",
-                    label: "Ordenar por",
+                    label: t("searchBar.sortBy"),
                     type: "select",
                     options: [
-                        { label: "Popularidade", value: "popularity" },
-                        { label: "Data de Lançamento", value: "release_date" },
-                        { label: "Nota Média", value: "vote_average" },
+                        { label: t("searchBar.popularity"), value: "popularity" },
+                        { label: t("searchBar.releaseDate"), value: "release_date" },
+                        { label: t("searchBar.voteAverage"), value: "vote_average" },
                     ],
                 },
                 {
                     name: "sort_order",
-                    label: "Ordem",
+                    label: t("searchBar.order"),
                     type: "sort",
                 },
             ],
         },
         {
-            title: "Filtros",
+            title: t("searchBar.filters"),
             fields: [
                 {
                     name: "with_genres",
-                    label: "Gêneros",
+                    label: t("searchBar.genres"),
                     type: "multiselect",
                     options: genres.map((item: TMDBGenres) => {
                         return { label: item.name, value: item.id?.toString() };
                     }),
-                    placeholder: "Select status",
+                    placeholder: t("searchBar.selectGenres"),
                 },
                 {
                     name: "release_date.gte",
-                    label: "Data de Lançamento (De)",
+                    label: t("searchBar.releaseDateFrom"),
                     type: "date",
                 },
                 {
                     name: "release_date.lte",
-                    label: "Data de Lançamento (Até)",
+                    label: t("searchBar.releaseDateTo"),
                     type: "date",
                 },
                 {
                     name: "grade",
-                    label: "Avaliação",
+                    label: t("searchBar.rating"),
                     type: "range",
                     range: {
                         min: 0,
@@ -129,23 +138,23 @@ const SearchBar: React.FC<{
                 },
                 {
                     name: "runtime",
-                    label: "Duração",
+                    label: t("searchBar.runtime"),
                     type: "range",
                     range: {
                         min: 0,
                         max: 400,
                         initialMinValue: 0,
                         initialMaxValue: 400,
-                        unit: "min",
+                        unit: t("searchBar.minutes"),
                     },
                 },
                 {
                     name: "include_adult",
-                    label: "Adulto",
+                    label: t("searchBar.adultContent"),
                     type: "radio",
                     options: [
-                        { label: "Sim", value: "true" },
-                        { label: "Não", value: "false" },
+                        { label: t("searchBar.yes"), value: "true" },
+                        { label: t("searchBar.no"), value: "false" },
                     ],
                 },
             ],
@@ -157,7 +166,7 @@ const SearchBar: React.FC<{
             <div className="flex flex-col p-4 w-full gap-4 mt-6 mx-auto">
                 <div className="flex flex-row w-full gap-2.5 md:max-w-[60%] xl:max-w-[40%] mx-auto">
                     <Input
-                        placeholder="Pesquise por filmes"
+                        placeholder={t("searchBar.placeholder")}
                         icon={
                             <ReactSVG
                                 src={IcoSearch}
@@ -192,6 +201,9 @@ const SearchBar: React.FC<{
                                 </div>
                             </div>
                         ))}
+                        <Button className="mr-0 ml-auto" onClick={clearFilters}>
+                            {t("searchBar.clearFilters")}
+                        </Button>
                     </div>
                 )}
             </div>

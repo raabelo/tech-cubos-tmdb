@@ -4,6 +4,7 @@ import { TMDBMovies } from "../../types/TMDBMovies";
 import { useState } from "react";
 import MovieGrade from "../ui/MovieGrade";
 import { useGenres } from "../../contexts/GenresContext";
+import { useTranslation } from "react-i18next";
 
 interface MovieCardProps {
     movie: TMDBMovies;
@@ -11,6 +12,7 @@ interface MovieCardProps {
 
 const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
     const { genres } = useGenres();
+    const { t } = useTranslation();
 
     const [isHovering, setIsHovering] = useState<boolean>(false);
 
@@ -42,7 +44,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
                     />
                 ) : (
                     <div className="w-full h-full flex items-center justify-center bg-gray-400">
-                        <span className="text-sm text-gray-700">No Image</span>
+                        <span className="text-sm text-gray-700">{t("movieCard.noImage")}</span>
                     </div>
                 )}
                 <div

@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import MoviePoster from "../components/ui/MoviePoster";
 import { TMDBMoviesDetails } from "../types/TMDBMovieDetails";
 import { useEffect, useState } from "react";
@@ -9,9 +9,13 @@ import { TMDBVideos } from "../types/TMDBVideos";
 import { formatCurrency, formatLanguage, formatMinutes } from "../utils/functions/formatValue";
 import MovieGrade from "../components/ui/MovieGrade";
 import LabelTag from "../components/ui/LabelTag";
+import { useTranslation } from "react-i18next";
+import { getCurrentLanguage } from "../utils/translations/i18n";
 
 const Movie: React.FC = () => {
+    const navigate = useNavigate();
     const { id } = useParams();
+    const { t } = useTranslation();
     const [movieDetails, setMovieDetails] = useState<TMDBMoviesDetails | undefined>(undefined);
     const [movieVideos, setMovieVideos] = useState<TMDBVideos[] | undefined>(undefined);
 
@@ -19,17 +23,22 @@ const Movie: React.FC = () => {
 
     useEffect(() => {
         const fetchmovieDetails = async (id: number) => {
-            const { details, videos } = await tmdb.getMovieDetails(id);
-            document.title = details.title
-                ? `${document.title} | ${details.title}`
-                : document.title;
-            setMovieDetails(details);
-            setMovieVideos(videos.results);
+            try {
+                const { details, videos } = await tmdb.getMovieDetails(id);
+                document.title = details.title
+                    ? `${document.title} | ${details.title}`
+                    : document.title;
+
+                setMovieDetails(details);
+                setMovieVideos(videos.results);
+            } catch {
+                navigate("/not-found");
+            }
         };
         if (id) {
             fetchmovieDetails(parseInt(id));
         }
-    }, [id]);
+    }, [id, getCurrentLanguage()]);
 
     return (
         <>
@@ -54,16 +63,16 @@ const Movie: React.FC = () => {
                                         {movieDetails?.title}
                                     </h1>
                                     <p className="opacity-80">
-                                        Título original: {movieDetails?.original_title}
+                                        {t("original_title")}: {movieDetails?.original_title}
                                     </p>
                                     <p className="mt-auto italic">{movieDetails?.tagline}</p>
                                 </div>
                                 <div className="flex flex-row gap-4 font-bold text-sm lg:text-nowrap">
                                     <div className="flex flex-row gap-4">
-                                        <MovieDetailCard title="POPULARIDADE">
+                                        <MovieDetailCard title={t("popularity")}>
                                             {movieDetails?.popularity}
                                         </MovieDetailCard>
-                                        <MovieDetailCard title="VOTOS">
+                                        <MovieDetailCard title={t("votes")}>
                                             {movieDetails?.vote_count}
                                         </MovieDetailCard>
                                     </div>
@@ -78,38 +87,38 @@ const Movie: React.FC = () => {
                             </div>
                             <div className="flex flex-col lg:flex-row gap-4">
                                 <div className="flex w-full">
-                                    <MovieDetailCard title="SINOPSE" className="flex-1">
+                                    <MovieDetailCard title={t("synopsis")} className="flex-1">
                                         {movieDetails?.overview}
                                     </MovieDetailCard>
                                 </div>
                                 <div className="flex flex-col gap-4 w-full font-bold text-sm lg:text-nowrap">
                                     <div className="flex flex-row gap-4">
-                                        <MovieDetailCard title="LANÇAMENTO">
+                                        <MovieDetailCard title={t("release_date")}>
                                             {movieDetails?.release_date &&
                                                 new Date(
                                                     movieDetails?.release_date
                                                 ).toLocaleDateString()}
                                         </MovieDetailCard>
-                                        <MovieDetailCard title="DURAÇÃO">
+                                        <MovieDetailCard title={t("duration")}>
                                             {formatMinutes(movieDetails?.runtime)}
                                         </MovieDetailCard>
                                     </div>
                                     <div className="flex flex-row gap-4">
-                                        <MovieDetailCard title="SITUAÇÃO">
+                                        <MovieDetailCard title={t("status")}>
                                             {movieDetails?.status}
                                         </MovieDetailCard>
-                                        <MovieDetailCard title="IDIOMA">
+                                        <MovieDetailCard title={t("language")}>
                                             {formatLanguage(movieDetails?.original_language)}
                                         </MovieDetailCard>
                                     </div>
                                     <div className="flex flex-row gap-4">
-                                        <MovieDetailCard title="ORÇAMENTO">
+                                        <MovieDetailCard title={t("budget")}>
                                             {formatCurrency(movieDetails?.budget)}
                                         </MovieDetailCard>
-                                        <MovieDetailCard title="RECEITA">
+                                        <MovieDetailCard title={t("revenue")}>
                                             {formatCurrency(movieDetails?.revenue)}
                                         </MovieDetailCard>
-                                        <MovieDetailCard title="LUCRO">
+                                        <MovieDetailCard title={t("profit")}>
                                             {movieDetails?.revenue && movieDetails?.budget
                                                 ? formatCurrency(
                                                       movieDetails?.revenue - movieDetails?.budget
@@ -120,7 +129,7 @@ const Movie: React.FC = () => {
                                 </div>
                             </div>
                             <div>
-                                <MovieDetailCard title="GÊNEROS" className="w-fit">
+                                <MovieDetailCard title={t("genres")} className="w-fit">
                                     <div className="text-sm font-semibold lg:text-nowrap flex flex-row flex-wrap gap-2">
                                         {movieDetails?.genres?.map((genre) => (
                                             <LabelTag key={genre?.id} className="w-fit">
@@ -139,7 +148,7 @@ const Movie: React.FC = () => {
                 </div>
                 <div className="p-8 flex flex-col gap-4">
                     <h1 className="text-2xl dark:text-dark-mauve12 text-light-mauve12 font-bold">
-                        Trailer
+                        {t("trailer")}
                     </h1>
                     <VideoPlayer video={trailer || null} />
                 </div>

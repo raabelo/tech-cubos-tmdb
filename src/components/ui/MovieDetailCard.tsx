@@ -16,7 +16,7 @@ const MovieDetailCard: React.FC<MovieDetailCardProps> = ({ title, children, ...p
                     dark:text-dark-mauve12 text-light-mauve12
                      ${props.className || ""}`}
             >
-                <p className="opacity-80 font-bold">{title}</p>
+                <p className="opacity-80 font-bold">{title?.toUpperCase()}</p>
                 {children}
             </div>
         </>

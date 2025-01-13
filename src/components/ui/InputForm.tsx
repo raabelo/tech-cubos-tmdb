@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { InputFieldProps } from "../../types/props/FormSectionProps";
 import Input from "./Input";
 import RangeSlider from "./RangeSlider";
+import { useTranslation } from "react-i18next";
 
 const InputForm: React.FC<{
     field: InputFieldProps;
@@ -10,14 +11,13 @@ const InputForm: React.FC<{
 }> = ({ field, handleFieldChange, initialValue = "" }) => {
     const [value, setValue] = useState<string>(initialValue);
     const [showDropdown, setShowDropdown] = useState<boolean>(false);
+    const { t } = useTranslation();
 
     const handleCheckboxChange = (optionValue: string) => {
         const parsedValue = value ? JSON.parse(value) : [];
-
         const newValue = parsedValue.includes(optionValue)
             ? parsedValue.filter((item: string) => item !== optionValue)
             : [...parsedValue, optionValue];
-
         if (handleFieldChange) {
             handleFieldChange(field.name, JSON.stringify(newValue));
         }
@@ -70,7 +70,7 @@ const InputForm: React.FC<{
                             value={""}
                             className="dark:text-dark-mauve1 text-light-mauve1 font-normal"
                         >
-                            {"Selecione uma opção"}
+                            {t("select_option")}
                         </option>
                         {field.options?.map((option) => (
                             <option
@@ -98,7 +98,7 @@ const InputForm: React.FC<{
                                           .join(", ")
                                     : ""
                             }
-                            placeholder="Selecione as opções"
+                            placeholder={t("select_options")}
                             className="w-full p-2  px-4 bg-transparent cursor-pointer dark:text-dark-mauve12 text-light-mauve12"
                             onClick={() => setShowDropdown(!showDropdown)}
                         />
@@ -241,11 +241,6 @@ const InputForm: React.FC<{
             {!["sort"].includes(field.type) && (
                 <label className="block font-semibold mb-1 pl-2 dark:text-dark-mauve12 text-light-mauve12">
                     {field.label}
-                    {/* {!field.required && (
-                        <span className="pl-2 text-xs font-light text-gray-400">
-                            {"(optional)"}
-                        </span>
-                    )} */}
                 </label>
             )}
             {["radio", "sort", "range"].includes(field.type) ? (

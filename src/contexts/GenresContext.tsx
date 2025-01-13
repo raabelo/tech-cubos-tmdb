@@ -1,6 +1,7 @@
 import React, { createContext, useState, useEffect, ReactNode } from "react";
 import { TMDBGenres } from "../types/TMDBGenres";
 import tmdb from "../services/tmdb";
+import { getCurrentLanguage } from "../utils/translations/i18n";
 
 interface GenresContextType {
     genres: TMDBGenres[];
@@ -32,7 +33,7 @@ const GenresProvider: React.FC<GenresProviderProps> = ({ children }) => {
         };
 
         fetchGenres();
-    }, []);
+    }, [getCurrentLanguage()]);
 
     return (
         <GenresContext.Provider value={{ genres, isLoading, error }}>

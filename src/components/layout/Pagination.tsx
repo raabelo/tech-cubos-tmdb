@@ -3,12 +3,14 @@ import Button from "../ui/Button";
 import { ReactSVG } from "react-svg";
 import IcoChevronLeft from "../../assets/icons/ChevronLeft.svg";
 import IcoChevronRight from "../../assets/icons/ChevronRight.svg";
+import { useTranslation } from "react-i18next";
 
 const Pagination: React.FC<{
     currentPage: number;
     totalPages: number;
     onPageChange: (page: number) => void;
 }> = ({ currentPage, totalPages, onPageChange }) => {
+    const { t } = useTranslation();
     const maxPages = 500;
     const totalPagesLimited = Math.min(totalPages, maxPages);
 
@@ -78,7 +80,7 @@ const Pagination: React.FC<{
                         className="dark:text-dark-mauve12 text-light-mauve12 text-sm hover:opacity-50 flex flex-row-reverse 
                         disabled:dark:text-dark-mauve12/50 disabled:text-light-mauve12/50"
                     >
-                        <p className="">Primeira página</p>
+                        <p className="">{t("pagination.firstPage")}</p>
                         <ReactSVG src={IcoChevronLeft} className="w-4" />
                         <ReactSVG src={IcoChevronLeft} className="w-4 -mr-3" />
                     </button>
@@ -89,7 +91,7 @@ const Pagination: React.FC<{
                         className="dark:text-dark-mauve12 text-light-mauve12 text-sm hover:opacity-50 flex flex-row 
                         disabled:dark:text-dark-mauve12/50 disabled:text-light-mauve12/50"
                     >
-                        <p className="">Última página</p>
+                        <p className="">{t("pagination.lastPage")}</p>
                         <ReactSVG src={IcoChevronRight} className="w-4" />
                         <ReactSVG src={IcoChevronRight} className="w-4 -ml-3" />
                     </button>
