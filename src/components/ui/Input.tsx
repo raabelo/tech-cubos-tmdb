@@ -7,10 +7,19 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
     icon?: ReactNode;
     iconPosition?: InputIconPosition;
     input?: ReactNode;
+    isFocused?: boolean;
 }
 
-const Input: React.FC<InputProps> = ({ label, icon, iconPosition = "right", input, ...props }) => {
+const Input: React.FC<InputProps> = ({
+    label,
+    icon,
+    iconPosition = "right",
+    input,
+    isFocused,
+    ...props
+}) => {
     const [isInputOnFocus, setIsInputOnFocus] = useState<boolean>(false);
+
     return (
         <>
             {label && <label>{label}</label>}
@@ -23,7 +32,9 @@ const Input: React.FC<InputProps> = ({ label, icon, iconPosition = "right", inpu
                       transition-all dark:bg-dark-mauve2 bg-light-mauve2
                       border border-dark-mauve12/20
                       ${
-                          isInputOnFocus ? "dark:border-dark-purple9 border-light-purple9" : ""
+                          isInputOnFocus || isFocused
+                              ? "dark:border-dark-purple9 border-light-purple9"
+                              : ""
                       }                    
                 `}
             >

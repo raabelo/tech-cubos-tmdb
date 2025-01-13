@@ -11,6 +11,7 @@ const InputForm: React.FC<{
 }> = ({ field, handleFieldChange, initialValue = "" }) => {
     const [value, setValue] = useState<string>(initialValue);
     const [showDropdown, setShowDropdown] = useState<boolean>(false);
+    const [isInputOnFocus, setIsInputOnFocus] = useState<boolean>(false);
     const { t } = useTranslation();
 
     const handleCheckboxChange = (optionValue: string) => {
@@ -48,6 +49,8 @@ const InputForm: React.FC<{
                                         if (handleFieldChange)
                                             handleFieldChange(field.name, option.value);
                                     }}
+                                    onFocus={() => setIsInputOnFocus(true)}
+                                    onBlur={() => setIsInputOnFocus(false)}
                                     {...field}
                                 />
                                 <label>{option.label}</label>
@@ -65,18 +68,17 @@ const InputForm: React.FC<{
                         onChange={(e) => {
                             if (handleFieldChange) handleFieldChange(field.name, e.target.value);
                         }}
+                        onFocus={() => setIsInputOnFocus(true)}
+                        onBlur={() => setIsInputOnFocus(false)}
                     >
-                        <option
-                            value={""}
-                            className="dark:text-dark-mauve1 text-light-mauve1 font-normal"
-                        >
+                        <option value={""} className="text-dark-mauve1">
                             {t("select_option")}
                         </option>
                         {field.options?.map((option) => (
                             <option
                                 key={option.value}
                                 value={option.value}
-                                className="dark:text-dark-mauve1 text-light-mauve1"
+                                className="text-dark-mauve1 "
                             >
                                 {option.label}
                             </option>
@@ -101,6 +103,8 @@ const InputForm: React.FC<{
                             placeholder={t("select_options")}
                             className="w-full p-2  px-4 bg-transparent cursor-pointer dark:text-dark-mauve12 text-light-mauve12"
                             onClick={() => setShowDropdown(!showDropdown)}
+                            onFocus={() => setIsInputOnFocus(true)}
+                            onBlur={() => setIsInputOnFocus(false)}
                         />
                         <p
                             onClick={() => setShowDropdown(!showDropdown)}
@@ -111,10 +115,10 @@ const InputForm: React.FC<{
 
                         {showDropdown && (
                             <div
-                                className="absolute top-8 left-0 w-full mt-2 bg-white shadow-lg rounded-md border z-50
-                                            dark:text-dark-mauve1 text-light-mauve1"
+                                className="absolute top-8 left-0 w-full mt-2 bg-light-mauve1 shadow-lg rounded-md border z-50
+                                            text-dark-mauve1"
                             >
-                                <div className="max-h-60 overflow-y-auto p-2">
+                                <div className="max-h-60 overflow-y-auto p-2 ">
                                     {field.options?.map((option) => (
                                         <div key={option.value} className="flex items-center">
                                             <input
@@ -128,7 +132,7 @@ const InputForm: React.FC<{
                                                 onChange={() => handleCheckboxChange(option.value)}
                                                 className="mr-2"
                                             />
-                                            <label htmlFor={option.value} className="text-sm">
+                                            <label htmlFor={option.value} className="text-sm ">
                                                 {option.label}
                                             </label>
                                         </div>
@@ -169,6 +173,8 @@ const InputForm: React.FC<{
                             }}
                             className="p-2 w-full self-start px-4 dark:[color-scheme:dark]
                             bg-transparent dark:text-dark-mauve12 text-light-mauve12"
+                            onFocus={() => setIsInputOnFocus(true)}
+                            onBlur={() => setIsInputOnFocus(false)}
                             {...field}
                             type="date"
                         />
@@ -228,6 +234,8 @@ const InputForm: React.FC<{
                                     handleFieldChange(field.name, e.target.value);
                             }}
                             className="border p-2 w-full self-start rounded-full px-4"
+                            onFocus={() => setIsInputOnFocus(true)}
+                            onBlur={() => setIsInputOnFocus(false)}
                             {...field}
                         />
                         {field.content}
@@ -246,7 +254,7 @@ const InputForm: React.FC<{
             {["radio", "sort", "range"].includes(field.type) ? (
                 getComponent(field)
             ) : (
-                <Input input={getComponent(field)} />
+                <Input isFocused={isInputOnFocus} input={getComponent(field)} />
             )}
         </div>
     );

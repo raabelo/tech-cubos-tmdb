@@ -182,7 +182,7 @@ const SearchBar: React.FC<{
                 </div>
 
                 {isFiltering && (
-                    <div className="dark:bg-dark-mauve4/50 bg-light-mauve4/50 backdrop-blur-xs p-4 rounded-lg">
+                    <div className="dark:bg-dark-mauve4/50 bg-light-mauve4/50 backdrop-blur-xs p-4 rounded-lg lg:mx-10">
                         {fields.map((section, i) => (
                             <div key={section.title} className="mb-4">
                                 <div
